@@ -19,4 +19,9 @@ export class AdminController {
   createAdmin(@Body() adminData: CreateAdminDto) {
     return this.adminService.addAdmin(adminData);
   }
+ @Post('add')
+  
+  aadd(@Body() adminData: CreateAdminDto) {
+    return this.adminService.addAdmin(adminData);
+  }
 }

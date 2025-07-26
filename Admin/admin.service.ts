@@ -4,8 +4,14 @@ import { CreateAdminDto } from './admin.dto';
 @Injectable()
 export class AdminService {
   users: any;
+  admins: CreateAdminDto[] = [];
   addAdmin(adminData: CreateAdminDto) {
-    throw new Error('Method not implemented.');
+  this.admins.push(adminData);
+   return {
+      message: 'Admin created successfully',
+      admin: adminData,
+      totalAdmins: this.admins.length,
+    };
   }
   getPhoto(id: number): string {
     throw new Error('Method not implemented.');
@@ -22,4 +28,5 @@ export class AdminService {
       message: 'User created successfully',
       user,
     };
+}
 }
