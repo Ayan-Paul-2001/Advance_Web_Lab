@@ -29,4 +29,18 @@ export class AdminService {
       user,
     };
 }
+addAdminWithImage(adminData: CreateAdminDto, imageFileName: string) {
+  const newAdmin = {
+    ...adminData,
+    nidImage: imageFileName,
+  };
+
+  // Save to in-memory array or database
+  this.admins.push(newAdmin);
+
+  return {
+    message: 'Admin created with image',
+    admin: newAdmin,
+  };
+}
 }

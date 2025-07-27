@@ -1,6 +1,9 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, UsePipes,ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, UsePipes,ValidationPipe, BadRequestException, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './admin.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 
 @Controller('admin')
 export class AdminController {
@@ -15,9 +18,43 @@ export class AdminController {
     return this.adminService.getPhotoById(id);
   }
    @Post('add')
-  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
-createAdmin(@Body() adminData: CreateAdminDto) {
-  return this.adminService.addAdmin(adminData);
+   @UseInterceptors(
+    FileInterceptor('nidImage', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, cb) => {
+          const uniqueName = Date.now() + '-' + file.originalname;
+          cb(null, uniqueName);
+        },
+      }),
+      limits: {
+        fileSize: 2 * 1024 * 1024,
+      },
+      fileFilter: (req, file, cb) => {
+        const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+        if (!allowedMimeTypes.includes(file.mimetype)) {
+          return cb(
+            new BadRequestException('Only JPG and PNG images are allowed.'),
+            false,
+          );
+        }
+        cb(null, true);
+      },
+    }),
+  )
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+createAdmin(
+  @Body() adminData: CreateAdminDto,
+  @UploadedFile() nidImage: Express.Multer.File,
+) {
+  if (!nidImage) {
+    throw new BadRequestException('NID image is required.');
+  }
+
+
+  console.log('Uploaded file:', nidImage.filename);
+
+  return this.adminService.addAdminWithImage(adminData, nidImage.filename);
 }
 
 }
