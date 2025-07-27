@@ -1,4 +1,4 @@
-import { IsEmail, Matches,IsNotEmpty, ValidateIf, isString, IsAlpha } from 'class-validator';
+import { IsEmail, Matches,IsNotEmpty, Length, ValidateIf, isString, IsAlpha } from 'class-validator';
 
 export class CreateAdminDto {
     @IsAlpha(undefined, { message: 'Name must be contain only letters (A-Z or a-z)' })
@@ -10,4 +10,10 @@ export class CreateAdminDto {
     message: 'Email must need to end with @xyz Domain'
   })
   email: string;
+
+
+  @IsNotEmpty({ message: 'NID Must be Given' })
+  @Matches(/^\d+$/, { message: 'NID must supports digits only' })
+  @Length(10, 17, { message: 'NID range is between 10 and 17 digits' })
+  nid: string;
 }
