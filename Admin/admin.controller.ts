@@ -14,14 +14,10 @@ export class AdminController {
   getPhotoById(@Param('id', ParseIntPipe) id: number): string {
     return this.adminService.getPhotoById(id);
   }
-   @Post()
-  @UsePipes(new ValidationPipe()) // Validates the data based on the DTO
-  createAdmin(@Body() adminData: CreateAdminDto) {
-    return this.adminService.addAdmin(adminData);
-  }
- @Post('add')
-  
-  aadd(@Body() adminData: CreateAdminDto) {
-    return this.adminService.addAdmin(adminData);
-  }
+   @Post('add')
+  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
+createAdmin(@Body() adminData: CreateAdminDto) {
+  return this.adminService.addAdmin(adminData);
+}
+
 }
