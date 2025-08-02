@@ -1,15 +1,15 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, UsePipes,ValidationPipe, BadRequestException, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, UsePipes,ValidationPipe, BadRequestException, UseInterceptors, UploadedFile, Patch } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './admin.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { extname } from 'path';
+
 
 @Controller('admin')
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
-  @Get()
+  /*@Get()
   getHello(): string {
     return this.adminService.getHello();
   }
@@ -56,5 +56,24 @@ createAdmin(
 
   return this.adminService.addAdminWithImage(adminData, nidImage.filename);
 }
+*/
+ @Post('create')
+  createUser(@Body() dto: CreateAdminDto) {
+    return this.adminService.createAdmin(dto);
+  }
 
+  @Patch('status/:id/:status')
+  updateStatus(@Param('id') id: number, @Param('status') status: 'active' | 'inactive') {
+    return this.adminService.updateStatus(+id, status);
+  }
+
+  @Get('inactive')
+  getInactiveAdmins() {
+    return this.adminService.getInactiveAdmins();
+  }
+
+  @Get('older-than-40')
+  getAdminsAbove40() {
+    return this.adminService.getAdminsAboveAge(40);
+  }
 }

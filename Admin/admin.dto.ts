@@ -1,6 +1,21 @@
 import { IsEmail, Matches,IsNotEmpty, Length, ValidateIf, isString, IsAlpha } from 'class-validator';
+import { IsString, IsInt, Min, MaxLength, IsIn, IsOptional } from 'class-validator';
 
 export class CreateAdminDto {
+  @IsString()
+  @MaxLength(100)
+  fullName: string;
+
+  @IsInt()
+  @Min(0)
+  age: number;
+
+  @IsOptional()
+  @IsIn(['active', 'inactive'])
+  status?: 'active' | 'inactive';
+}
+
+/*export class CreateAdminDto {
     @IsAlpha(undefined, { message: 'Name must be contain only letters (A-Z or a-z)' })
       name: string;
 
@@ -17,3 +32,4 @@ export class CreateAdminDto {
   @Length(10, 17, { message: 'NID range is between 10 and 17 digits' })
   nid: string;
 }
+*/
