@@ -7,6 +7,9 @@ import { diskStorage } from 'multer';
 
 @Controller('admin')
 export class AdminController {
+  getHello(): any {
+    throw new Error('Method not implemented.');
+  }
   constructor(private readonly adminService: AdminService) {}
 
   /*@Get()
@@ -58,6 +61,7 @@ createAdmin(
 }
 */
  @Post('create')
+ @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
   createUser(@Body() dto: CreateAdminDto) {
     return this.adminService.createAdmin(dto);
   }

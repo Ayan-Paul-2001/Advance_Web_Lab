@@ -2,12 +2,18 @@ import { IsEmail, Matches,IsNotEmpty, Length, ValidateIf, isString, IsAlpha } fr
 import { IsString, IsInt, Min, MaxLength, IsIn, IsOptional } from 'class-validator';
 
 export class CreateAdminDto {
-  @IsString()
-  @MaxLength(100)
+  
+  
+   @IsNotEmpty({ message: 'Full name is required' })
+   @MaxLength(100)
+  @Matches(/^[A-Za-z\s]+$/, {
+    message: 'Full name must contain only letters and spaces',
+  })
+  
   fullName: string;
 
-  @IsInt()
-  @Min(0)
+  @IsInt({ message: 'Age must be an integer' })
+  @Min(0, { message: 'Age must be a positive number' }) // ✅ Prevents negative age
   age: number;
 
   @IsOptional()

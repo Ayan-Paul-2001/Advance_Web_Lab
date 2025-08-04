@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AdminModule } from './Admin/admin.module'; // ✅ CORRECT PATH
+import { AdminModule } from './Admin/admin.module'; 
 
 @Module({
   imports: [
@@ -16,9 +16,9 @@ import { AdminModule } from './Admin/admin.module'; // ✅ CORRECT PATH
       autoLoadEntities: true,
       synchronize: true,
     }),
-    AdminModule, // ✅ This includes AdminController & AdminService
+    AdminModule, 
   ],
-  controllers: [AppController], // ✅ No need to include AdminController here
-  providers: [AppService],       // ✅ No need to include AdminService here
+  controllers: [AppController], 
+  providers: [AppService],       
 })
 export class AppModule {}

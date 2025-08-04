@@ -45,7 +45,7 @@ addAdminWithImage(adminData: CreateAdminDto, imageFileName: string) {
   return {
     message: 'Admin created Successfully with image',
     admin: newAdmin,
-  };
+  }; 
 }
   */
    constructor(
